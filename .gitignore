@@ -1,0 +1,15 @@
+﻿*.vsidx
+*.v2
+*.testlog
+.vs
+*.suo
+*.dll
+*.exe
+*.pdb
+*.props
+obj
+bin
+packages
+*.cache
+*.bin
+*.user
