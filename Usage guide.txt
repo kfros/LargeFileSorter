@@ -1,0 +1,5 @@
+Compile the project
+Go to Bin folder
+
+Generate file: FileGenerator <outputFilePath> <sizeInGb>
+Sort file: FileSorter <input file> <output file>
