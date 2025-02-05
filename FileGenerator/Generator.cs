@@ -2,13 +2,13 @@
 
 public class Generator
 {
-    string outputFile;
-    long targetSizeBytes;
+    string _outputFile;
+    long _targetSizeBytes;
 
-    public Generator(string _outputFile, long _targetSizeBytes)
+    public Generator(string outputFile, long targetSizeBytes)
     {
-        outputFile = outputFile;
-        targetSizeBytes = targetSizeBytes;
+        _outputFile = outputFile;
+        _targetSizeBytes = targetSizeBytes;
     }
     public void GenerateTestFile()
     {
@@ -17,9 +17,9 @@ public class Generator
         var rnd = new Random();
         long currentBytes = 0;
 
-        using var writer = new StreamWriter(outputFile, false, Encoding.UTF8);
+        using var writer = new StreamWriter(_outputFile, false, Encoding.UTF8);
 
-        while (currentBytes < targetSizeBytes)
+        while (currentBytes < _targetSizeBytes)
         {
             int number = rnd.Next(1, 1000000);
             string firstWord = firstWords[rnd.Next(firstWords.Count)];
@@ -36,7 +36,7 @@ public class Generator
             string line = $"{number}. {stringPart}";
             int lineBytes = Encoding.UTF8.GetByteCount(line) + Encoding.UTF8.GetByteCount(Environment.NewLine);
 
-            if (currentBytes + lineBytes > targetSizeBytes)
+            if (currentBytes + lineBytes > _targetSizeBytes)
                 break;
 
             writer.WriteLine(line);

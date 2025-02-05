@@ -16,15 +16,15 @@ Stopwatch sw = new Stopwatch();
 sw.Start();
 try
 {
-    FileProcessor fp = new FileProcessor();
+    FileProcessor fileProcessor = new FileProcessor();
     Console.WriteLine($"Sorting started at {DateTime.Now:HH:mm:ss tt}");
-    var tempFiles = fp.SplitFile(inputFile, tempDir);
-    fp.MergeFiles(tempFiles, outputFile);
+    var tempFiles = fileProcessor.SplitFileToFragments(inputFile, tempDir);
+    fileProcessor.MergeFiles(tempFiles, outputFile);
     sw.Stop();
 }
 finally
 {
     Directory.Delete(tempDir, true);
     Console.WriteLine($"Sorting complete at {DateTime.Now:HH:mm:ss tt}");
-    Console.WriteLine($"                 Time elapsed: {sw.Elapsed.TotalSeconds}");
+    Console.WriteLine($"                 Time elapsed: {sw.Elapsed.TotalMinutes} : {sw.Elapsed.TotalSeconds}");
 }

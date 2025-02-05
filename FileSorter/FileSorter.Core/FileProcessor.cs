@@ -8,7 +8,7 @@ public class FileProcessor
 {
     const int bufferSize = 4 * 1024 * 1024; // 4MB buffer
     const long maxBatchSize = 2 * 1024L * 1024 * 1024; // 2GB batches
-    public List<string> SplitFile(string inputFile, string tempDir)
+    public List<string> SplitFileToFragments(string inputFile, string tempDir)
     {
         var tempFiles = new List<string>();
         using var reader = new StreamReader(
@@ -32,7 +32,7 @@ public class FileProcessor
 
             if (currentBatchSize >= maxBatchSize)
             {
-                tempFiles.Add(ProcessBatch(batch, tempDir));
+                tempFiles.Add(SortBatch(batch, tempDir));
                 batch.Clear();
                 currentBatchSize = 0;
             }
@@ -40,7 +40,7 @@ public class FileProcessor
 
         if (batch.Count > 0)
         {
-            tempFiles.Add(ProcessBatch(batch, tempDir));
+            tempFiles.Add(SortBatch(batch, tempDir));
         }
 
         return tempFiles;
@@ -86,7 +86,7 @@ public class FileProcessor
         }
     }
 
-    string ProcessBatch(List<string> batch, string tempDir)
+    string SortBatch(List<string> batch, string tempDir)
     {
         var entries = new BatchEntry[batch.Count];
 
@@ -102,14 +102,14 @@ public class FileProcessor
         var tempFile = Path.Combine(tempDir, Guid.NewGuid() + ".tmp");
         using var writer = new StreamWriter(
             new BufferedStream(
-                new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize),
-                bufferSize
-            )
-        );
-
-        foreach (var entry in entries)
+                new FileStream(
+                    tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize),bufferSize));
         {
-            writer.WriteLine(entry.Line);
+
+            foreach (var entry in entries)
+            {
+                writer.WriteLine(entry.Line);
+            }
         }
 
         return tempFile;
